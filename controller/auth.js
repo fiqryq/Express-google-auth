@@ -6,7 +6,7 @@ require("../config/passport");
 
 router.use(
   cookieSession({
-    name: "tuto-session",
+    name: "app-session",
     keys: ["key1", "key2"],
   })
 );
