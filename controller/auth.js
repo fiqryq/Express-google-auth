@@ -7,7 +7,7 @@ require("../config/passport");
 router.use(
   cookieSession({
     name: "app-session",
-    keys: ["key1", "key2"],
+    keys: ["key1"],
   })
 );
 
@@ -20,15 +20,27 @@ const isLoggedIn = (req, res, next) => {
 };
 
 router.use(passport.initialize());
+
 router.use(passport.session());
 
 router.get("/", (req, res) => res.sendStatus(200));
 
 router.get("/failed", (req, res) => res.send("gagal login"));
 
-router.get("/home", isLoggedIn, (req, res) =>
-  res.send(`halo ${req.user.displayName}!`)
-);
+router.get("/home", isLoggedIn, (req, res) => {
+  const profile = {
+    id: req.user.id,
+    name: req.user.name,
+    photo: req.user.photos,
+  };
+
+  res.send({
+    response: 200,
+    data: {
+      profile,
+    },
+  });
+});
 
 router.get(
   "/google",
